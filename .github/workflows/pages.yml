@@ -40,6 +40,10 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Build (base path = /<repo>/)
         run: npm run content && npx vite build --base "/${GITHUB_REPOSITORY#*/}/" && npx tsx scripts/check-dist.ts
+      # Pages has no rewrite rules: a direct link or refresh on /<repo>/ES/week/2/quiz would be GitHub's 404 page.
+      # Serving the app as 404.html lets the router pick up the path (same page, so links, bookmarks and refresh work).
+      - name: Deep links (SPA fallback)
+        run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
         with: { path: dist }
   deploy:
