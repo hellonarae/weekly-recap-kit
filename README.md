@@ -3,12 +3,13 @@
 Turn each week's lecture slides into a review site for your students: vocabulary cards, grammar notes, the dialogue with audio and shadowing, and a quiz. An AI agent (GitHub Copilot) drafts everything and you approve it in one click.
 
 - Works for any language you teach.
-- **One account: GitHub.** No API keys, no other services, nothing to install.
+- **One account: GitHub.** Nothing to install, no coding, and no API keys for the kit itself. (Natural voices are an optional extra that needs a free ElevenLabs key.)
 - Students need only the link. No sign-up, no tracking.
+- **Stuck at any point? Ask Copilot first** (see *Stuck? Ask Copilot* below). It can read your repository and explain errors.
 
 **Before you start**
 - A GitHub account with **Copilot Pro**. It is free for verified teachers through GitHub Education (https://education.github.com/teachers). Approval can take a few days, and a Copilot Pro trial works in the meantime. Copilot *Free* does not include the agent that drafts the weeks.
-- Slides as **PowerPoint (.pptx)** with real text (not pictures of text). From Google Slides, Keynote or PDF, export to .pptx first. No slides to hand? Use the sample slides (see *Sample material* below).
+- Slides as **PowerPoint (.pptx)** with real text (not pictures of text). The kit reads .pptx files, so convert other formats first: Google Slides *File → Download → Microsoft PowerPoint*, Keynote *File → Export To → PowerPoint*. PDF is not read yet. No slides to hand? Use the sample slides (see *Sample material* below).
 
 ---
 
@@ -26,17 +27,20 @@ After about two minutes you get a green tick, and your site (with one example we
 
 ## 3. Describe your course in `course.yml`
 *Practising with the Spanish sample slides? Skip this step. The kit is already set up for them.*
-Open `course.yml` → pencil icon. Every line is commented. Change `app.name`, `app.target_language`, `app.script`, the two theme colours, your `levels` (the level `id` is the folder name under `levels/`) and the `speakers` in your dialogues. Then click **Commit changes**.
+`course.yml` is a short text file with your course's settings. Click it in the file list, then the **pencil icon**. It opens in GitHub's editor in your browser, so there's nothing to install. Change the values after the colons, keep the spaces at the start of each line, then click **Commit changes…** → **Commit changes**. Every line has a comment saying what it does. The main ones are `app.name`, `app.target_language`, `app.script`, the two theme colours, your `levels` (the level `id` is the folder name your weeks will go in, e.g. `FR1` → `levels/FR1/`) and the `speakers` in your dialogues.
+- **Or let Copilot do it:** Issues → New issue → describe your course in plain words (name, language, class, speakers, colours) → assign **Copilot** → merge its pull request.
+- With your own level, the Spanish example (`levels/ES`) disappears from the site but stays in the repository as a model for Copilot.
 
 ## 4. Upload a week's slides
 On your computer, make a folder `week-02` with a folder `source` inside, and put that week's .pptx files in `source`. (The sample zip already has its folders laid out this way.)
 In your repository, open `levels` → `ES` → `weeks` → **Add file → Upload files**. Drag the whole **`week-02` folder** onto the page, choose **Commit directly to the main branch**, and click **Commit changes**.
-- `week-01` is the built-in example. Start at `week-02`, or delete the example week first.
-- Your own level? Lay it out the same way on your computer, `<LEVEL>/weeks/week-01/source/…`, then open `levels` and drag the `<LEVEL>` folder.
+- **Several weeks at once:** put several week folders side by side (`week-02`, `week-03`, …) and drag them all together. Each becomes its own issue in step 5.
+- In `levels/ES`, `week-01` is the built-in example, so start at `week-02`. With your own level (step 3) every week number is free: lay it out as `<LEVEL>/weeks/week-01/source/…` on your computer, open `levels` and drag the `<LEVEL>` folder.
 
 ## 5. Hand the week to Copilot
 Within a minute an issue appears under **Issues**: *Draft levels/ES/weeks/week-02*. Open it → **Assignees** (right-hand side) → **Copilot**.
 That one click starts the draft. GitHub doesn't let the automation assign Copilot itself. Copilot replies on the issue and opens a pull request. Drafting takes about 10–20 minutes.
+Uploaded several weeks? There is one issue per week: assign Copilot on each, and the drafts run side by side. Tip: draft and merge one week first, because Copilot uses your earlier weeks as examples. Each draft uses part of your monthly Copilot allowance (Copilot settings → Usage).
 
 ## 6. Review and publish
 Open **Pull requests** → Copilot's pull request.
@@ -63,6 +67,12 @@ CC BY means the source must be credited wherever its content appears. The kit al
 - The site itself is public to anyone with the link, even from a private repository. It carries `noindex`, so search engines don't list it.
 - Publish only your own notes, example sentences and dialogues. For publisher or third-party material, check that you have permission to use and publish it.
 - No accounts and no student data: the kit has sign-in and tracking switched off (`modules` in `course.yml`).
+
+## Stuck? Ask Copilot
+Copilot can read your repository, so it can usually tell you what went wrong faster than anyone else.
+- **A red ✗ in the Actions tab:** open the failed run and click **Explain error** (Copilot icon) next to the log.
+- **Anything else:** click the **Copilot icon** at the top of any GitHub page, make sure your repository is attached, and ask in plain words, for example: *"I'm following the README of this repository. I uploaded slides to levels/ES/weeks/week-02/source but no issue appeared. What went wrong?"*
+- **About a draft:** comment on the pull request starting with `@copilot` and say what to change.
 
 ## Troubleshooting
 - **No issue after step 4.** Actions tab → **draft-week**: a red ✗ shows the reason. Check that the slides sit in `levels/<LEVEL>/weeks/week-NN/source/` and that the folder has no `week.yml` yet. Then **Run workflow** there.
