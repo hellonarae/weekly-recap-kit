@@ -22,7 +22,7 @@ Click **Create repository**.
 
 ## 2. Switch on the site
 In your new repository: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-Then open the **Actions** tab → click **pages** in the left list → **Run workflow → Run workflow**.
+Then open the **Actions** tab in the menu at the top of the repository (next to *Pull requests*, not *Settings → Actions*) → click **pages** in the left list → **Run workflow → Run workflow**.
 After about two minutes you get a green tick, and your site (with one example week) is live at `https://<your-username>.github.io/<repository-name>/`. The address is also shown on Settings → Pages.
 
 ## 3. Describe your course in `course.yml`
