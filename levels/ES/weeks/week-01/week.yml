@@ -1,0 +1,8 @@
+level: ES
+week: 1
+title: "Unit 1 · Hello, my name is…"
+units: [unit1]
+status: published
+estimated_minutes: 15
+auto: [flashcards, match_vocab, dialogue_order, listen_choose]
+shuffle_quiz: false

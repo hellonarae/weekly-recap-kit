@@ -1,0 +1,19 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+src/generated/
+.DS_Store
+*.tsbuildinfo
+.vercel/
+.supabase/
+# never publish teaching sources; they are read by scripts only.
+# (kept in git for the private repo; the kit excludes levels/ entirely)
+public/_img/
+public/_audio/
+public/manifest.webmanifest
+.vercel
+.env*
+# local-only experiments and voice samples (demo video)
+scratch/

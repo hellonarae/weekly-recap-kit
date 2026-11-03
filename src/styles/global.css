@@ -1,0 +1,29 @@
+@import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
+@import '../generated/tokens.css';
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 17px;
+  line-height: 26px;
+  font-weight: 450;
+  overflow-x: hidden;
+}
+h1, h2, h3 { margin: 0; font-weight: 650; letter-spacing: -0.01em; }
+h1 { font-size: 36px; line-height: 44px; font-weight: 700; letter-spacing: -0.02em; }
+h2 { font-size: 24px; line-height: 32px; }
+h3 { font-size: 19px; line-height: 26px; }
+p { margin: 0; }
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+button { font: inherit; color: inherit; cursor: pointer; }
+.tl { font-family: var(--font-tl); font-size: 20px; line-height: 32px; }
+.small { font-size: 13px; line-height: 18px; color: var(--ink-2); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

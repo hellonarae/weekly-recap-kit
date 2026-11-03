@@ -1,0 +1,42 @@
+items:
+  - id: w01-q01
+    type: mcq
+    prompt: "How do you ask someone's name?"
+    options: ["¿Cómo te llamas?", "¿De dónde eres?", "¿Eres estudiante?", "¿Cómo estás?"]
+    answer: 0
+    explain: "¿Cómo te llamas? literally asks how you call yourself."
+
+  - id: w01-q02
+    type: blank
+    sentence: "___ llamo Pablo."
+    options: ["Me", "Te", "Se"]
+    answer: 0
+    explain: "Me llamo = I call myself; te llamas = you call yourself."
+
+  - id: w01-q03
+    type: order
+    prompt: "My name is Ana."
+    chunks: ["Me", "llamo", "Ana"]
+    answer: "Me llamo Ana"
+    explain: "Me + llamo + name."
+
+  - id: w01-q04
+    type: type
+    prompt: "I'm a student."
+    answer: "Soy estudiante."
+    accept: ["Soy estudiante", "soy estudiante"]
+    explain: "Soy + job, no article."
+
+  - id: w01-q05
+    type: match
+    pairs:
+      - ["estudiante", "student"]
+      - ["profesor", "teacher (m.)"]
+      - ["médico", "doctor"]
+      - ["libro", "book"]
+
+  - id: w01-q06
+    type: tf
+    statement: "In Spanish you say 'soy un estudiante' for 'I am a student'."
+    answer: false
+    explain: "No article with jobs after soy: soy estudiante."

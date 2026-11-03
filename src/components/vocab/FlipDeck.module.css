@@ -1,0 +1,21 @@
+.deck { display: grid; gap: 10px; justify-items: center; }
+.card { position: relative; width: 100%; max-width: 420px; aspect-ratio: 5 / 3; perspective: 1200px; cursor: pointer; outline: none; }
+.card:focus-visible .inner { box-shadow: 0 0 0 3px var(--accent); }
+.inner { position: absolute; inset: 0; transition: transform 350ms cubic-bezier(.2,.7,.2,1); transform-style: preserve-3d; border-radius: var(--radius-m); }
+.card[data-flipped="true"] .inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: var(--radius-m); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 20px; text-align: center; }
+.front { background: var(--primary-soft); border: 1px solid var(--line); }
+.back { background: var(--surface); border: 1px solid var(--line); transform: rotateY(180deg); }
+.cat { position: absolute; top: 12px; left: 16px; font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); }
+.word { font-size: 36px; line-height: 44px; font-weight: 700; letter-spacing: -0.01em; }
+.gloss { font-size: 24px; line-height: 32px; font-weight: 600; }
+.note { font-size: 15px; line-height: 20px; color: var(--ink-2); }
+.tools { display: flex; gap: 8px; }
+.star { position: absolute; top: 8px; right: 8px; width: 40px; height: 40px; border-radius: 50%; border: 0; background: transparent; color: var(--ink-3); display: inline-flex; align-items: center; justify-content: center; z-index: 2; }
+.star[data-on="true"] { color: var(--accent-ink); }
+.nav { display: flex; align-items: center; gap: 16px; }
+.navBtn { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); display: inline-flex; align-items: center; justify-content: center; color: var(--ink-2); }
+.navBtn:hover { background: var(--surface-2); }
+.count { min-width: 64px; text-align: center; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.hint { color: var(--ink-3); }
+@media (prefers-reduced-motion: reduce) { .inner { transition: none; } }

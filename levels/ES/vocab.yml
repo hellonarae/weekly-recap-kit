@@ -1,0 +1,27 @@
+level: ES
+units:
+  - id: unit1
+    label: "Unit 1 — Greetings and introductions"
+    entries:
+      - { n: 1,  es: "hola",            en: "hello",             cat: "Greetings" }
+      - { n: 2,  es: "buenos días",     en: "good morning",      cat: "Greetings" }
+      - { n: 3,  es: "buenas tardes",   en: "good afternoon",    cat: "Greetings" }
+      - { n: 4,  es: "adiós",           en: "goodbye",           cat: "Greetings" }
+      - { n: 5,  es: "España",          en: "Spain",             cat: "Countries", img: "flag:es" }
+      - { n: 6,  es: "Inglaterra",      en: "England",           cat: "Countries", img: "flag:gb-eng" }
+      - { n: 7,  es: "México",          en: "Mexico",            cat: "Countries", img: "flag:mx" }
+      - { n: 8,  es: "estudiante",      en: "student",           cat: "Jobs" }
+      - { n: 9,  es: "profesor",        en: "teacher (m.)",      cat: "Jobs" }
+      - { n: 10, es: "profesora",       en: "teacher (f.)",      cat: "Jobs" }
+      - { n: 11, es: "médico",          en: "doctor",            cat: "Jobs" }
+      - { n: 12, es: "libro",           en: "book",              cat: "Classroom", img: "icon:book" }
+      - { n: 13, es: "¿Cómo te llamas?", en: "What's your name?", cat: "Phrases", kind: phrase }
+      - { n: 14, es: "Me llamo…",       en: "My name is…",       cat: "Phrases", kind: phrase }
+      - { n: 15, es: "Mucho gusto.",    en: "Nice to meet you.", cat: "Phrases", kind: phrase }
+  - id: unit2
+    label: "Unit 2 — Where are you from?"
+    entries:
+      - { n: 1, es: "¿De dónde eres?", en: "Where are you from?", cat: "Phrases", kind: phrase }
+      - { n: 2, es: "Soy de…",         en: "I'm from…",           cat: "Phrases", kind: phrase }
+      - { n: 3, es: "ciudad",          en: "city",                cat: "Places" }
+      - { n: 4, es: "país",            en: "country",             cat: "Places" }

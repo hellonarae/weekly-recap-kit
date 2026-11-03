@@ -1,0 +1,48 @@
+# course.yml — everything about YOUR course lives here. The app code never changes.
+# Lines starting with # are comments. Keep the 2-space indents. Edit in GitHub: open this file → pencil icon → Commit.
+
+app:
+  name: Weekly Spanish Recap        # shown as the site title and wordmark (3 words: the middle one is coloured)
+  short_name: Recap                 # short label for the browser tab / home screen
+  ui_language: en                   # interface language (English only in v1)
+  target_language: es               # the language you teach: es, fr, de, it, pt, ko, ja, zh …
+                                    # also the key used in vocab.yml (es: "hola")
+  script: latin                     # latin | cyrillic | hangul | hanzi | kana (picks fonts)
+  theme:
+    primary: "#1F4E79"              # one brand colour; everything else is derived from it
+    accent:  "#F2B134"              # used for progress and success only
+  # The sample slides (Lumen Learning, CC BY) must be credited on any site built from them — keep this line while
+  # you use them. With only your own material, replace it, e.g. "Made by your teacher for this class."
+  footer_note: "Sample slides: Lumen Learning, Introductory Spanish I (CC BY)"
+  contact_email: ""                 # leave empty: no "Send feedback" button on the site
+
+levels:                             # one entry per class; id = the folder name under levels/
+  - id: ES                          # letters/digits only, used in the site's URLs
+    label: Spanish Beginners
+    vocab: levels/ES/vocab.yml      # the level's vocabulary by unit (optional)
+    typing_quizzes: true            # false = typing quizzes become word-order quizzes (good for beginners)
+
+speakers:                           # every speaker name used in dialogue.md, spelled exactly
+  Ana:   { gender: f, voice: "", fallback: "es-ES" }   # fallback = language of the device voice
+  Pablo: { gender: m, voice: "", fallback: "es-ES" }   # voice = ElevenLabs voice id (optional, see README)
+  # The drafting agent adds the speakers it finds in your slides here; check their gender in its pull request.
+
+audio:
+  provider: browser                 # browser = device voice (free, nothing to set up)
+                                    # elevenlabs = natural voices made at build time (README → Optional)
+  model: eleven_multilingual_v2     # ElevenLabs only; eleven_flash_v2_5 = half the credits, flatter intonation
+  speed_options: [0.75, 1.0]        # playback speeds offered in the player
+  attribution: true                 # ElevenLabs only: shows "Audio: ElevenLabs" in the footer (free-plan rule)
+  examples: false                   # ElevenLabs only: also make audio for grammar examples
+  vocab: false                      # ElevenLabs only: also make audio for vocabulary (cards + Anki export)
+
+vocab:
+  card_image: back                  # where a word's picture shows on the flip card: front | back | off
+  anki_export: apkg                 # apkg (with audio + images) | tsv (text only) | off
+
+# Optional add-ons (sign-in, tracking, admin page) are not part of the kit. Leave this line as it is.
+modules: { auth: none, tracking: false, admin: false, rewards: false, avatar: false }
+
+publish:
+  target: pages                     # GitHub Pages (free)
+  noindex: true                     # keep the site out of search engines

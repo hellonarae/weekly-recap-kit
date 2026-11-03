@@ -1,0 +1,46 @@
+# A new levels/<L>/weeks/week-NN/source/ folder (slides) with no week.yml yet → open a drafting issue for the
+# Copilot agent. Also runs Monday 07:00 Europe/London as a safety net. The teacher's fallback is always the issue
+# template (.github/ISSUE_TEMPLATE/draft-week.md) assigned to Copilot by hand.
+# Assigning Copilot needs a *user* token: the workflow's own GITHUB_TOKEN is refused (GitHub does not let a bot
+# start an agent session). Without the optional COPILOT_ASSIGN_TOKEN secret (fine-grained personal access token for
+# this repo: Contents, Issues, Pull requests, Actions read/write) the issue still opens and the teacher clicks
+# Assignees → Copilot once.
+name: draft-week
+on:
+  push:
+    branches: [main]
+    paths: ['levels/*/weeks/*/source/**']
+  schedule:
+    - cron: '0 7 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: '${{ github.token }}'
+      ASSIGN_TOKEN: '${{ secrets.COPILOT_ASSIGN_TOKEN }}'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Open an issue for each week that has source/ but no week.yml
+        run: |
+          shopt -s nullglob
+          # A repo made from a template has only GitHub's default labels, and `gh issue create --label` fails on a missing one.
+          gh label create draft --color BFD4F2 --description "Week draft for the Copilot agent" 2>/dev/null || true
+          for src in levels/*/weeks/week-*/source; do
+            week=$(dirname "$src")
+            [ -f "$week/week.yml" ] && continue
+            title="Draft $week"
+            if gh issue list --state open --search "\"$title\" in:title" --json title --jq '.[].title' | grep -qx "$title"; then echo "open issue exists for $week"; continue; fi
+            level=$(echo "$week" | cut -d/ -f2); n=$(basename "$week" | sed 's/week-0*//')
+            body=$(sed -e "s#{WEEK_DIR}#$week#g" -e "s#{LEVEL}#$level#g" -e "s#{N}#$n#g" .github/ISSUE_TEMPLATE/draft-week.md | sed '1,/^---$/{/^---$/!d;};1,/^---$/d')
+            url=$(gh issue create --title "$title" --body "$body" --label draft)
+            echo "opened $url"
+            if [ -n "$ASSIGN_TOKEN" ] && GH_TOKEN="$ASSIGN_TOKEN" gh issue edit "$url" --add-assignee "@copilot"; then
+              echo "assigned Copilot on $url"
+            else
+              echo "::notice title=Assign Copilot::Open $url → Assignees → Copilot (one click starts the draft)."
+            fi
+          done

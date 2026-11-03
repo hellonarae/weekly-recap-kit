@@ -1,0 +1,16 @@
+# Prepares the Copilot agent's workspace before it drafts a week. GitHub looks for this exact file and job name.
+# Node + this repository's npm packages, so `npm run extract` and `npm run validate` work straight away.
+# Test it by hand: Actions → "Copilot setup steps" → Run workflow.
+name: Copilot setup steps
+on:
+  workflow_dispatch:
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci

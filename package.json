@@ -1,0 +1,47 @@
+{
+  "name": "weekly-recap-kit",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "npm run content && vite",
+    "content": "tsx scripts/build-content.ts",
+    "validate": "tsx scripts/validate-content.ts",
+    "tokens": "tsx scripts/build-tokens.ts",
+    "audio": "tsx scripts/build-audio.ts",
+    "voices": "tsx scripts/list-voices.ts",
+    "images": "tsx scripts/build-images.ts",
+    "extract": "tsx scripts/extract/index.ts",
+    "build": "npm run content && tsc -p tsconfig.app.json --noEmit && vite build && tsx scripts/check-dist.ts",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit",
+    "check:secrets": "tsx scripts/check-secrets.ts"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@supabase/supabase-js": "^2.118.0",
+    "flag-icons": "^7.6.0",
+    "lucide-react": "^0.487.0",
+    "pretendard": "^1.3.9",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.0",
+    "sql.js": "^1.15.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@types/react": "^18.3.20",
+    "@types/react-dom": "^18.3.6",
+    "@types/sql.js": "^1.4.11",
+    "@vitejs/plugin-react": "^4.4.0",
+    "fflate": "^0.8.3",
+    "playwright": "^1.49.1",
+    "tsx": "^4.19.0",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.0",
+    "yaml": "^2.7.0",
+    "zod": "^3.24.0"
+  }
+}

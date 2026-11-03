@@ -1,0 +1,19 @@
+.card { max-width: 480px; margin: 24px auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-m); padding: 24px; display: grid; gap: 14px; }
+.card h1 { font-size: 24px; }
+.form { display: grid; gap: 12px; }
+.label { font-size: 14px; color: var(--ink-2); }
+.input { width: 100%; min-height: 44px; border: 1px solid var(--line); border-radius: var(--radius-s); padding: 0 12px; font: inherit; color: var(--ink); background: var(--paper); }
+.input:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+.primary { border: 0; background: var(--primary); color: var(--on-primary); border-radius: 999px; padding: 0 18px; min-height: 44px; font-weight: 600; }
+.primary:disabled { opacity: .5; }
+.secondary { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 0 16px; min-height: 44px; }
+.danger { border: 1px solid #c62828; color: #c62828; background: var(--surface); border-radius: 999px; padding: 0 16px; min-height: 44px; }
+.linkBtn { border: 0; background: transparent; color: var(--primary); padding: 0; font: inherit; text-decoration: underline; justify-self: start; cursor: pointer; }
+.otp { font-size: 24px; letter-spacing: 0.2em; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.error { color: #c62828; font-size: 14px; }
+.list { padding-left: 20px; display: grid; gap: 6px; }
+.actions { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+.row { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.row:last-child { border-bottom: 0; }
+.code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 700; color: var(--primary); }
+.section { display: grid; gap: 10px; }

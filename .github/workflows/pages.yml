@@ -1,0 +1,51 @@
+# Kit deploy: every push to main → (natural voices, if set up) → build → publish with GitHub Pages.
+# One-time setup: Settings → Pages → Build and deployment → Source: "GitHub Actions".
+# The site lives at https://<you>.github.io/<repo>/ — the base path is passed to the build below.
+# Audio lives here, not in a separate workflow: a commit pushed with the workflow's own token never starts another
+# workflow, so a separate audio job could not trigger the deploy. The audio commit therefore does not re-run this either.
+name: pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write                    # commit generated mp3s back to the repository
+  pages: write
+  id-token: write
+concurrency: { group: pages, cancel-in-progress: false }
+jobs:
+  build:
+    # Run #1 is the commit GitHub makes when the repository is created from the template, before Pages is switched
+    # on, so it would only fail. "Run workflow" (workflow_dispatch) always runs.
+    if: github.run_number != 1 || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    env: { ELEVENLABS_API_KEY: '${{ secrets.ELEVENLABS_API_KEY }}' }   # secrets can't be tested in a step `if`; env can
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run validate
+      - name: Natural voices (only with the ELEVENLABS_API_KEY secret)
+        if: env.ELEVENLABS_API_KEY != ''
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q ffmpeg   # only used for a speaker's `gain`
+          npm run audio -- --prune
+          git add -A levels
+          if git diff --cached --quiet; then echo "no new audio"; exit 0; fi
+          git config user.name recap-bot && git config user.email recap-bot@users.noreply.github.com
+          git commit -m "Audio: generated missing lines [bot]"
+          git pull --rebase -q && git push
+      - name: Check that Pages is switched on (Settings → Pages → Source "GitHub Actions")
+        uses: actions/configure-pages@v5
+      - name: Build (base path = /<repo>/)
+        run: npm run content && npx vite build --base "/${GITHUB_REPOSITORY#*/}/" && npx tsx scripts/check-dist.ts
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: dist }
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: { name: github-pages, url: '${{ steps.deployment.outputs.page_url }}' }
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

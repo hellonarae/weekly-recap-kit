@@ -1,0 +1,17 @@
+.wrap { display: grid; gap: 16px; }
+.toolbar { display: flex; justify-content: flex-end; }
+.toggle { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: var(--ink-2); min-height: 44px; }
+.point { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-m); padding: 20px; display: grid; gap: 12px; }
+.pattern { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; }
+.pattern .tl { font-size: 24px; line-height: 32px; font-weight: 700; color: var(--primary-deep); }
+.label { font-size: 17px; line-height: 24px; font-weight: 500; color: var(--ink-2); }
+.body { display: grid; gap: 8px; }
+.body code { background: var(--surface-2); padding: 0 4px; border-radius: 4px; }
+.examples { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.example { display: grid; grid-template-columns: 32px 1fr 32px; gap: 10px; align-items: center; padding: 6px 0; border-top: 1px solid var(--surface-2); }
+.exText { display: grid; }
+.en { font-size: 15px; line-height: 20px; color: var(--ink-2); }
+.save { width: 32px; height: 32px; border: 0; background: transparent; color: var(--ink-3); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
+.save[data-on="true"] { color: var(--accent-ink); }
+.tip { background: var(--accent-soft); color: var(--accent-ink); border-radius: var(--radius-s); padding: 10px 14px; font-size: 15px; line-height: 22px; }
+.tip p { display: inline; }
