@@ -52,6 +52,8 @@ A few minutes later the week is on your site. Share the link with your students 
 
 **Every week after that: steps 4–6.** Upload slides → assign Copilot → read, tweak, merge.
 
+**To change a week that is already live:** Issues → New issue → say what to change in plain words → assign **Copilot** → merge its pull request. (Or type the same request in the **Agents** tab.)
+
 ---
 
 ## What students get
@@ -71,7 +73,7 @@ CC BY means the source must be credited wherever its content appears. The kit al
 ## Stuck? Ask Copilot
 Copilot can read your repository, so it can usually tell you what went wrong faster than anyone else.
 - **A red ✗ in the Actions tab:** open the failed run and click **Explain error** (Copilot icon) next to the log.
-- **Anything else:** click the **Copilot icon** at the top of any GitHub page, make sure your repository is attached, and ask in plain words, for example: *"I'm following the README of this repository. I uploaded slides to levels/ES/weeks/week-02/source but no issue appeared. What went wrong?"*
+- **Anything else:** click the **Copilot icon** next to the search box at the top of any GitHub page. Opened from your repository, the chat attaches it automatically. Ask in plain words, or ask it to guide you step by step, for example: *"I'm following the README of this repository. I uploaded slides to levels/ES/weeks/week-02/source but no issue appeared. What went wrong?"*
 - **About a draft:** comment on the pull request starting with `@copilot` and say what to change.
 
 ## Troubleshooting

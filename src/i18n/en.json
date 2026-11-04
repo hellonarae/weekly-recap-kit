@@ -193,7 +193,7 @@
   "admin.addDomain": "Add domain",
   "admin.remove": "Remove",
   "admin.codes": "Invite codes",
-  "admin.codesHint": "For students and testers. A code lets any email sign up and grants the levels ticked on it. Max uses, expiry and note can be edited in the table; Disable expires a code now.",
+  "admin.codesHint": "For students and testers. A code lets any email sign up and grants the levels ticked on it. Max uses, expiry and note can be edited in the table; Disable expires a code now. A code nobody has used yet can be deleted; a used one is only disabled, so each account keeps the code it signed up with.",
   "admin.code": "Code",
   "admin.maxUses": "Max uses",
   "admin.expires": "Expires",
@@ -242,5 +242,9 @@
   "signin.classCodeLabel": "Class code",
   "signin.classCodeHint": "Your teacher gives this out in class. You only need it the first time.",
   "admin.disable": "Disable",
-  "admin.codeOff": "inactive"
+  "admin.codeOff": "inactive",
+  "admin.col.via": "Via",
+  "admin.viaDomain": "domain",
+  "admin.delete": "Delete",
+  "admin.deleteConfirm": "Really delete"
 }

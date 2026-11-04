@@ -28,5 +28,7 @@
 .button:disabled { opacity: .5; }
 .form { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); align-items: end; }
 .field { display: grid; gap: 4px; font-size: 13px; color: var(--ink-2); }
+.actionsCell { white-space: nowrap; } .actionsCell > * + * { margin-left: 10px; }
+.dangerBtn { border: 1px solid #c62828; color: #c62828; background: var(--surface); border-radius: 999px; padding: 2px 10px; font-size: 13px; cursor: pointer; }
 .error { color: #c62828; }
 .warn { color: #8a5a00; background: #fff6e0; border-radius: var(--radius-s); padding: 8px 10px; font-size: 14px; }

@@ -75,6 +75,11 @@ export function Admin() {
     const { error: e } = await supabase.from('invite_codes').update(patch).eq('code', code);
     if (e) setError(e.message); else void load();
   }
+  async function deleteCode(code: string) {
+    if (!supabase) return;
+    const { error: e } = await supabase.from('invite_codes').delete().eq('code', code);
+    if (e) setError(e.message); else void load();
+  }
   async function createCode(input: { code: string; levels: string[] | null; max_uses: number; expires_at: string | null; note: string }) {
     if (!supabase) return;
     const { error: e } = await supabase.from('invite_codes').insert({ ...input, created_by: auth.profile?.user_id });
@@ -83,6 +88,7 @@ export function Admin() {
   async function exportEvents(withEmail: boolean) {
     if (!supabase) return;
     const emailOf = new Map(students.map((r) => [r.user_id, `${r.display_name ?? ''} <${r.email}>`]));
+    const viaOf = new Map(students.map((r) => [r.user_id, r.invite_code ?? 'domain']));
     const all: Record<string, unknown>[] = [];
     for (let from = 0; ; from += 1000) {
       const { data, error: e } = await supabase.from('events').select('user_id,code,type,week_id,payload,created_at').order('created_at').range(from, from + 999);
@@ -90,13 +96,13 @@ export function Admin() {
       all.push(...(data as Record<string, unknown>[]));
       if (!data || data.length < 1000) break;
     }
-    const head = [withEmail ? 'email' : null, 'code', 'type', 'week', 'payload', 'at'].filter((h): h is string => h !== null);
-    const body = all.map((e) => [withEmail ? emailOf.get(String(e.user_id)) ?? '' : null, e.code as string, e.type as string, e.week_id as string, JSON.stringify(e.payload), e.created_at as string].filter((_, i) => withEmail || i !== 0));
+    const head = [withEmail ? 'email' : null, 'code', 'via', 'type', 'week', 'payload', 'at'].filter((h): h is string => h !== null);
+    const body = all.map((e) => [withEmail ? emailOf.get(String(e.user_id)) ?? '' : null, e.code as string, viaOf.get(String(e.user_id)) ?? '', e.type as string, e.week_id as string, JSON.stringify(e.payload), e.created_at as string].filter((_, i) => withEmail || i !== 0));
     download(`events-${withEmail ? 'with-email-' : ''}${new Date().toISOString().slice(0, 10)}.csv`, csv([head, ...body]));
   }
   function exportParticipants(withEmail: boolean) {
-    const head = [withEmail ? 'name' : null, withEmail ? 'email' : null, 'code', 'consent_at', 'withdrawn_at', 'levels', 'active_minutes', 'events', 'last_active'].filter((h): h is string => h !== null);
-    const body = students.map((r) => [withEmail ? r.display_name : null, withEmail ? r.email : null, r.code, r.consent_at, r.withdrawn_at, (r.levels ?? []).join(' '), r.active_minutes, r.events_n, r.last_active].filter((_, i) => withEmail || i > 1));
+    const head = [withEmail ? 'name' : null, withEmail ? 'email' : null, 'code', 'via', 'consent_at', 'withdrawn_at', 'levels', 'active_minutes', 'events', 'last_active'].filter((h): h is string => h !== null);
+    const body = students.map((r) => [withEmail ? r.display_name : null, withEmail ? r.email : null, r.code, r.invite_code ?? 'domain', r.consent_at, r.withdrawn_at, (r.levels ?? []).join(' '), r.active_minutes, r.events_n, r.last_active].filter((_, i) => withEmail || i > 1));
     download(`participants-${withEmail ? 'with-email-' : ''}${new Date().toISOString().slice(0, 10)}.csv`, csv([head, ...body]));
   }
 
@@ -119,7 +125,7 @@ export function Admin() {
               </div>
               <div className={s.tableWrap}>
                 <table className={s.table}>
-                  <thead><tr><th>{t('admin.col.code')}</th>{showEmail && <><th>{t('admin.col.name')}</th><th>{t('admin.col.email')}</th></>}<th>{t('admin.col.consent')}</th><th>{t('admin.col.levels')}</th><th>{t('admin.col.minutes')}</th><th>{t('admin.col.lastActive')}</th><th /></tr></thead>
+                  <thead><tr><th>{t('admin.col.code')}</th>{showEmail && <><th>{t('admin.col.name')}</th><th>{t('admin.col.email')}</th></>}<th>{t('admin.col.consent')}</th><th>{t('admin.col.via')}</th><th>{t('admin.col.levels')}</th><th>{t('admin.col.minutes')}</th><th>{t('admin.col.lastActive')}</th><th /></tr></thead>
                   <tbody>
                     {participants.map((r) => (
                       <Fragment key={r.user_id}>
@@ -127,6 +133,7 @@ export function Admin() {
                           <td className={s.code}>{r.code ?? '–'}{r.role === 'admin' && <span className={s.badge}>{t('admin.adminBadge')}</span>}</td>
                           {showEmail && <><td>{r.display_name ?? '–'}</td><td>{r.email}</td></>}
                           <td>{r.withdrawn_at ? t('admin.withdrawn') : r.consent_at ? fmt(r.consent_at) : t('admin.noConsent')}</td>
+                          <td className={s.code}>{r.invite_code ?? t('admin.viaDomain')}</td>
                           <td>
                             {levels.map((l) => {
                               const on = !r.levels || r.levels.includes(l.id);
@@ -142,7 +149,7 @@ export function Admin() {
                           <td><button type="button" className={s.linkBtn} onClick={() => setOpen(open === r.user_id ? null : r.user_id)}>{open === r.user_id ? t('admin.hide') : t('admin.weeksDetail')}</button></td>
                         </tr>
                         {open === r.user_id && (
-                          <tr><td colSpan={showEmail ? 8 : 6}>
+                          <tr><td colSpan={showEmail ? 9 : 7}>
                             <ul className={s.weekList}>
                               {weekIds.filter((w) => r.weeks[w.id]).map((w) => { const d = r.weeks[w.id]!; return (
                                 <li key={w.id}><strong>{w.label}</strong> · {(d.tabs ?? []).filter(Boolean).join(', ') || '–'} · {d.minutes} min · {d.plays} {t('admin.plays')}{d.quiz ? ` · ${t('admin.quiz')} ${d.quiz.score}/${d.quiz.total}` : ''}</li>
@@ -189,7 +196,7 @@ export function Admin() {
             </section>
           )}
 
-          {tab === 'access' && <Access domains={domains ?? []} codes={codes ?? []} onAddDomain={addDomain} onRemoveDomain={removeDomain} onCreateCode={createCode} onUpdateCode={updateCode} />}
+          {tab === 'access' && <Access domains={domains ?? []} codes={codes ?? []} onAddDomain={addDomain} onRemoveDomain={removeDomain} onCreateCode={createCode} onUpdateCode={updateCode} onDeleteCode={deleteCode} />}
 
           {tab === 'export' && (
             <section className={s.section}>
@@ -214,10 +221,11 @@ function ExportRow({ label, onExport }: { label: string; onExport(withEmail: boo
   );
 }
 
-function Access({ domains, codes, onAddDomain, onRemoveDomain, onCreateCode, onUpdateCode }: {
+function Access({ domains, codes, onAddDomain, onRemoveDomain, onCreateCode, onUpdateCode, onDeleteCode }: {
   domains: string[]; codes: CodeRow[];
   onAddDomain(d: string): Promise<void>; onRemoveDomain(d: string): Promise<void>;
   onUpdateCode(code: string, patch: { max_uses?: number; expires_at?: string | null; note?: string }): Promise<void>;
+  onDeleteCode(code: string): Promise<void>;
   onCreateCode(i: { code: string; levels: string[] | null; max_uses: number; expires_at: string | null; note: string }): Promise<void>;
 }) {
   const [domain, setDomain] = useState('');
@@ -226,6 +234,7 @@ function Access({ domains, codes, onAddDomain, onRemoveDomain, onCreateCode, onU
   const [maxUses, setMaxUses] = useState('5');
   const [expires, setExpires] = useState('');
   const [note, setNote] = useState('');
+  const [confirmDel, setConfirmDel] = useState<string | null>(null);
   const hint = useMemo(() => (course.auth?.allowed_domains ?? []).filter((d) => !domains.includes(d.toLowerCase())), [domains]);
   return (
     <section className={s.section}>
@@ -263,7 +272,12 @@ function Access({ domains, codes, onAddDomain, onRemoveDomain, onCreateCode, onU
                 <td>{c.uses} / <input className={s.inputSm} inputMode="numeric" defaultValue={c.max_uses} aria-label={t('admin.maxUses')} onBlur={(e) => { const v = Number(e.target.value); if (v > 0 && v !== c.max_uses) void onUpdateCode(c.code, { max_uses: v }); }} /></td>
                 <td><input className={s.inputSm} type="date" defaultValue={c.expires_at ? c.expires_at.slice(0, 10) : ''} aria-label={t('admin.expires')} onChange={(e) => void onUpdateCode(c.code, { expires_at: e.target.value ? new Date(e.target.value + 'T23:59:59').toISOString() : null })} /></td>
                 <td><input className={s.inputSm} defaultValue={c.note ?? ''} aria-label={t('admin.note')} onBlur={(e) => { if (e.target.value !== (c.note ?? '')) void onUpdateCode(c.code, { note: e.target.value }); }} /></td>
-                <td>{expired ? <span className={s.badge}>{t('admin.codeOff')}</span> : <button type="button" className={s.linkBtn} onClick={() => void onUpdateCode(c.code, { expires_at: new Date().toISOString() })}>{t('admin.disable')}</button>}</td>
+                <td className={s.actionsCell}>
+                  {expired ? <span className={s.badge}>{t('admin.codeOff')}</span> : <button type="button" className={s.linkBtn} onClick={() => void onUpdateCode(c.code, { expires_at: new Date().toISOString() })}>{t('admin.disable')}</button>}
+                  {c.uses === 0 && (confirmDel === c.code
+                    ? <><button type="button" className={s.dangerBtn} onClick={() => { setConfirmDel(null); void onDeleteCode(c.code); }}>{t('admin.deleteConfirm')}</button> <button type="button" className={s.linkBtn} onClick={() => setConfirmDel(null)}>{t('feedback.cancel')}</button></>
+                    : <button type="button" className={s.linkBtn} onClick={() => setConfirmDel(c.code)}>{t('admin.delete')}</button>)}
+                </td>
               </tr>
             );
           })}</tbody>
