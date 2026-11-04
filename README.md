@@ -18,12 +18,12 @@ On this page click **Use this template → Create a new repository**. Name it, e
 - **Private** (recommended). Your uploaded slides stay visible to you only. A private repository needs GitHub Pro to publish the site, and GitHub Education gives you Pro.
 - **Public** works on any account, but **anyone can see the slides you upload**. Use it only with the sample slides or with material you are allowed to share.
 
-Click **Create repository**.
+Leave *Include all branches* off and the optional Copilot prompt box empty, then click **Create repository**.
 
 ## 2. Switch on the site
 In your new repository: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 Then open the **Actions** tab in the menu at the top of the repository (next to *Pull requests*, not *Settings → Actions*) → click **pages** in the left list → **Run workflow → Run workflow**.
-After about two minutes you get a green tick, and your site (with one example week) is live at `https://<your-username>.github.io/<repository-name>/`. The address is also shown on Settings → Pages.
+After about two minutes you get a green tick, and your site (with one example week) is live at `https://<your-username>.github.io/<repository-name>/`. The address is also shown on Settings → Pages. Tip: on the **Code** tab, click the gear next to **About** → tick *Use your GitHub Pages website* → Save, and the address stays at the top of your repository.
 
 ## 3. Describe your course in `course.yml`
 *Practising with the Spanish sample slides? Skip this step. The kit is already set up for them.*
@@ -38,13 +38,13 @@ In your repository, open `levels` → `ES` → `weeks` → **Add file → Upload
 - In `levels/ES`, `week-01` is the built-in example, so start at `week-02`. With your own level (step 3) every week number is free: lay it out as `<LEVEL>/weeks/week-01/source/…` on your computer, open `levels` and drag the `<LEVEL>` folder.
 
 ## 5. Hand the week to Copilot
-Within a minute an issue appears under **Issues**: *Draft levels/ES/weeks/week-02*. Open it → **Assignees** (right-hand side) → **Copilot**.
+Within a minute an issue appears under **Issues**: *Draft levels/ES/weeks/week-02*. Click its title → **Assignees** (right-hand side) → **Copilot** (or the **Assign to Agent** button). In the *Assign agent to issue* window leave everything as it is → **Assign**.
 That one click starts the draft. GitHub doesn't let the automation assign Copilot itself. Copilot replies on the issue and opens a pull request. Drafting takes about 10–20 minutes.
 Uploaded several weeks? There is one issue per week: assign Copilot on each, and the drafts run side by side. Tip: draft and merge one week first, because Copilot uses your earlier weeks as examples. Each draft uses part of your monthly Copilot allowance (Copilot settings → Usage).
 
 ## 6. Review and publish
 Open **Pull requests** → Copilot's pull request.
-- If you see **Approve and run workflows**, click it. The content check then posts ✅ or ❌ as a comment.
+- At the bottom, if it says *1 workflow awaiting approval*, click **Approve workflows to run**. The content check then posts ✅ or ❌ as a comment.
 - **Files changed**: read `grammar.md`, `dialogue.md`, `quiz.yml` and `week.yml`. To change something, click **⋯ → Edit file** (the edit saves into the same pull request), or write a comment starting with `@copilot` saying what to change.
 - When you're happy: **Ready for review** (if the pull request is still a draft) → **Merge pull request → Confirm merge**.
 
@@ -79,7 +79,10 @@ Copilot can read your repository, so it can usually tell you what went wrong fas
 - **Copilot isn't in the Assignees list.** Your account needs Copilot Pro, and the agent must be allowed for this repository: Settings → Copilot → Cloud agent.
 - **❌ from the content check.** The comment lists file and line. Typical causes: a speaker missing from `course.yml`, a dialogue line without its `>` translation, a quiz answer that doesn't match its chunks. Comment `@copilot please fix the content check` and it will.
 - **The site didn't change after merging.** Actions tab → **pages**: wait for the green tick (2–3 minutes). A red ✗ in the "Pages" step means step 2's *Source: GitHub Actions* is not set.
-- **Tired of "Approve and run workflows"?** Settings → Copilot → Cloud agent → turn off *Require approval for workflow runs*. GitHub warns that unreviewed agent code then runs with this repository's permissions.
+- **Merged, but the week isn't on the site.** Open the week's `week.yml`: `status` must be `published` (`draft` hides a week).
+- **No sound in Chrome on a computer** (but fine on a phone or in Safari): quit Chrome completely (Cmd+Q on a Mac, close every window on Windows) and open it again. Chrome's speech engine sometimes stops until a restart.
+- **GitHub asks which email to use for a commit.** Any of yours is fine in a private repository. To keep your address out of public ones: Settings → Emails → *Keep my email addresses private*.
+- **Tired of "Approve workflows to run"?** Settings → Copilot → Cloud agent → turn off *Require approval for workflow runs*. GitHub warns that unreviewed agent code then runs with this repository's permissions.
 
 ## Optional extras
 - **Your own vocabulary list by unit** (Word/Excel): upload it to `levels/<LEVEL>/source/`, then **Issues → New issue → Convert vocabulary list** → assign **Copilot**. Weeks then use your units instead of the words the agent picks from the slides.
